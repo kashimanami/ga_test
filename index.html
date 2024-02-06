@@ -5,7 +5,8 @@
   <script>
     document.addEventListener('play', function(e) {
       var loopJudge = e.target.loop
-      while(loopJudge === 'true'){
+      console.log(loopJudge)
+      <!--while(loopJudge === 'true'){-->
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
                     'event': 'video_play',
@@ -15,8 +16,8 @@
                     'video_current_time': '0'
                 });
               }
-        loopJudge = false;
-      }
+       <!-- loopJudge = false;-->
+     <!-- }-->
   }, true);
 </script>
   <!-- Google Tag Manager -->
