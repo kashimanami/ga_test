@@ -4,7 +4,7 @@
   <!-- 動画再生開始イベント-video_start -->
   <script>
     document.addEventListener('play', function(e) {
-      var videoCurrentTime = video.currentTime;
+      var videoCurrentTime = Math.floor(video.currentTime * 10) / 10;
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
                     'event': 'video_play',
