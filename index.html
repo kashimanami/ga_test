@@ -4,16 +4,19 @@
   <!-- 動画再生開始イベント-video_start -->
   <script>
     document.addEventListener('play', function(e) {
-      var videoCurrentTime = Math.floor(e.target.currentTime* 10) / 10;
+      var loopJudge = e.target.loop
+      while(loopJudge === 'true'){
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
                     'event': 'video_play',
                     'event_category': 'video',
                     'event_action': 'play',
                     'event_label': e.target.id,
-                    'video_current_time': videoCurrentTime
+                    'video_current_time': '0'
                 });
               }
+        loopJudge = false;
+      }
   }, true);
 </script>
   <!-- Google Tag Manager -->
