@@ -5,7 +5,10 @@
   <script>
     document.addEventListener('play', function(e) {
       var loopJudge = e.target.loop
+      if(loopJudge === 'true'){
       console.log(loopJudge)
+      }console.log("?")
+      
       <!--while(loopJudge === 'true'){-->
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
