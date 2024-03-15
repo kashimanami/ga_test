@@ -8,9 +8,9 @@
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
                     'event': 'video_play',
-                    'trEventBe_argument2': 'video',
-                    'trEventBe_argument3': 'play',
-                    'trEventBe_argument4': e.target.id,
+                    'event_category': 'video',
+                    'event_action': 'play',
+                    'event_label': e.target.id,
                     'video_current_time': videoCurrentTime
                 });
               }
