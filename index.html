@@ -120,6 +120,117 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <p>Learn to Code, Learn to be Creative.</p>
     </div>
   </footer>
+  <script>
+(function () {
+  function waitTargetElement(selector, callback, intervalMs, timeoutMs) {
+    var startTimeMs = Date.now();
+    findElement();
+
+    function findElement(){
+      var target = document.querySelector(selector);
+      if (target != null) {
+        // DOM が生成された場合は、後続関数へ
+        callback(target);
+        return;
+      } else {
+        setTimeout(function(){
+          if (timeoutMs && Date.now() - startTimeMs > timeoutMs) {
+            // DOM が生成されなかった場合は return
+            return;
+          }
+          // DOM が見つからなければもう一度探す
+          findElement();
+        }, intervalMs);
+      }
+    }
+  }
+
+  // DOM が生成された場合
+  function callback(target) {
+    var observerOptions = {
+      childList: true,
+      attributes: true,
+      subtree: true,
+    };
+    judgeProgress();
+
+    var observer = new MutationObserver(function(){
+      judgeProgress();
+    });
+    observer.observe(target, observerOptions);
+  }
+
+  waitTargetElement(".content-video", callback, 100, 5000);
+
+  function judgeProgress() {
+    var videoEle = document.getElementsByTagName("video");
+    var count = 0;
+    for (var i = 0; i < videoEle.length; i++) {
+      videoEle[i].addEventListener("timeupdate", function(e) {
+        var video = this;
+        var videoDuration = video.duration;
+        var videoCurrentTime = Math.floor(e.target.currentTime);
+        var threshold10 = videoDuration * 0.1;
+        var threshold25 = videoDuration * 0.25;
+        var threshold50 = videoDuration * 0.5;
+        var threshold75 = videoDuration * 0.75;
+        var threshold100 = videoDuration;
+        
+        if (videoCurrentTime >= threshold10) {
+          if(count === 0) {
+            pushDataLayer("10", video, videoCurrentTime);
+            count++;
+          }
+        }
+        if (videoCurrentTime >= threshold25) {
+
+          if(count === 1) {
+            pushDataLayer("25", video, videoCurrentTime);
+            count++;
+          }
+        }
+        if (videoCurrentTime >= threshold50) {
+          
+          if(count === 2) {
+            pushDataLayer("50", video, videoCurrentTime);
+            count++;
+          }
+        }
+        if (videoCurrentTime >= threshold75) {
+          
+          if(count === 3) {
+              pushDataLayer("75", video, videoCurrentTime);
+              count++;
+          };
+        }
+
+        if (videoCurrentTime == Math.floor(threshold100)) {
+          
+          if(count === 4) {
+            new Promise(function(resolve){
+              pushDataLayer("100", video, videoCurrentTime);
+              count++;
+              resolve();
+            }).then(function(){
+              videoEle[i].removeEventListener("timeupdate", arguments.callee);
+            });
+          }
+        }
+      });
+    }
+  }
+
+  function pushDataLayer(percent, video, videoCurrentTime) {
+    dataLayer.push({
+      event: "video_progress_" + percent + "%",
+      'event_category':"video",
+      'event_action': "progress_" + percent + "%",
+      'event_label': video.id,
+      'video_current_time': videoCurrentTime
+    });
+  }
+}());
+</script>
 </body>
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MZD96K7M"
