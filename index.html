@@ -2,15 +2,15 @@
 <html>
 <head>
   <!-- 動画再生開始イベント-video_playコンテンツごと初回のみ  -->
-  <script>
+ <script>
     document.addEventListener('play', function(e) {
       var videoCurrentTime = Math.floor(e.target.currentTime);
             if (e.target.tagName === 'VIDEO') {
                 dataLayer.push({
                     'event': 'video_play',
-                    'event_category': 'video',
-                    'event_action': 'play',
-                    'event_label': e.target.id,
+                    'trEventBe_argument2': 'video',
+                    'trEventBe_argument3': 'play',
+                    'trEventBe_argument4': e.target.id,
                     'video_current_time': videoCurrentTime
                 });
               }
